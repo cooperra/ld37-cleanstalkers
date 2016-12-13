@@ -19,6 +19,8 @@ class SimpleGame {
     fullscreenSprite: Phaser.Sprite;
     fullscreenText: Phaser.Text;
 
+    dialogger: DialogController;
+
     constructor() {
         this.game = new Phaser.Game(1920, 1080, Phaser.AUTO, 'content', {
             create: this.create, preload: this.preload,
@@ -96,10 +98,18 @@ class SimpleGame {
             756.5, 171.5,
             "window");
 
-	function l(thiss:any, name: string, x?: number, y?: number, alt?: string) : Phaser.Sprite {
+	let dd = (dialog: string, s: Phaser.Sprite) => {
+	    s.inputEnabled = true;
+	    s.events.onInputDown.addOnce(()=>{(<DialogController>this.dialogger).beginSequence(dialog);});
+	};
+	function l(thiss:any, name: string, x?: number, y?: number, alt?: string, dialog?: string) : Phaser.Sprite {
 	    if (alt) {
-		newContainer(thiss.game, new Phaser.Point(x, y), name, alt);
-		return;
+		let c = newContainer(thiss.game, new Phaser.Point(x, y), name, alt);
+		let sprite = (<SpriteComponent>c.getComponent("SpriteComponent")).sprite;
+		if (dialog) {
+		    sprite.events.onInputDown.addOnce(()=>{(<DialogController>thiss.dialogger).beginSequence(dialog);});
+		}
+		return sprite;
 	    }
 	    var image = thiss.game.cache.getImage(name);
 	    var s = thiss.game.add.sprite(x || thiss.game.width / 2 - image.width / 2,
@@ -109,7 +119,7 @@ class SimpleGame {
 	    draggify(s);
 	    return s;
 	}
-	l(this,"laundry", 811.5, 725);
+	dd('ON CLEANING UP THE LAUNDRY:',l(this,"laundry", 811.5, 725));
 	l(this,"bookcase1", 1371.5, 335, "bookcase3");
 	////l(this,"bookcase2", 1371.5, 335);
 	//////l(this,"bookcase3", 1371.5, 335);
@@ -149,7 +159,8 @@ class SimpleGame {
 	this.fullscreenGroup = this.game.add.group();
 	this.fullscreenGroup.addMultiple([this.fullscreenSprite, this.fullscreenText]);
 
-	let d = new DialogController(this.game);
+	    let d = new DialogController(this.game);
+	    this.dialogger = d;
 	let blackbg = (()=>{
 	    let gfx = new Phaser.Graphics(this.game);
 	    gfx.beginFill(0x000000, 0.44);

@@ -337,17 +337,25 @@ var SimpleGame = (function () {
         this.nightstand = newNightstand(this.game, new Phaser.Point(479, 329));
         var image = this.game.cache.getImage("window");
         this.windowSprite = this.game.add.sprite(756.5, 171.5, "window");
-        function l(thiss, name, x, y, alt) {
+        var dd = function (dialog, s) {
+            s.inputEnabled = true;
+            s.events.onInputDown.addOnce(function () { _this.dialogger.beginSequence(dialog); });
+        };
+        function l(thiss, name, x, y, alt, dialog) {
             if (alt) {
-                newContainer(thiss.game, new Phaser.Point(x, y), name, alt);
-                return;
+                var c = newContainer(thiss.game, new Phaser.Point(x, y), name, alt);
+                var sprite = c.getComponent("SpriteComponent").sprite;
+                if (dialog) {
+                    sprite.events.onInputDown.addOnce(function () { thiss.dialogger.beginSequence(dialog); });
+                }
+                return sprite;
             }
             var image = thiss.game.cache.getImage(name);
             var s = thiss.game.add.sprite(x || thiss.game.width / 2 - image.width / 2, y || thiss.game.height / 2 - image.height / 2, name);
             draggify(s);
             return s;
         }
-        l(this, "laundry", 811.5, 725);
+        dd('ON CLEANING UP THE LAUNDRY:', l(this, "laundry", 811.5, 725));
         l(this, "bookcase1", 1371.5, 335, "bookcase3");
         l(this, "phone", 616.5, 439, "phone-ring");
         l(this, "bed-case", 613.5, 404, "bed-case-open");
@@ -364,6 +372,7 @@ var SimpleGame = (function () {
         this.fullscreenGroup = this.game.add.group();
         this.fullscreenGroup.addMultiple([this.fullscreenSprite, this.fullscreenText]);
         var d = new DialogController(this.game);
+        this.dialogger = d;
         var blackbg = (function () {
             var gfx = new Phaser.Graphics(_this.game);
             gfx.beginFill(0x000000, 0.44);
