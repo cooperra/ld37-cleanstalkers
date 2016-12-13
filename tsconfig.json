@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "none",
+        "noImplicitAny": false,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+	"outFile": "scripts/game.js",
+	"allowJs": false
+    },
+    "include": [
+	"src/**/*"
+    ]
+}

@@ -1,0 +1,20 @@
+-PHONE RINGS- | sfx
+-PHONE CLICKS, THEY HANG UP- | sfx
+________________ | section end
+ON TAKING OUT THE TRASH: | section start
+ON CLEAING UP THE LAUNDRY: | section start
+ON OPENING THE FRIDGE: | section start
+ON CHECKING THE NIGHTSTAND: | section start
+ON CHECKING UNDER THE BED: | section start
+ON CHECKING BEHIND THE CLOTHES CHANGER: | section start
+ON CHECKING THE SAFE: | section start
+-SAFE MAKES NOISES, BUMPS- | sfx, animation
+ON CHECKING THE BOOKSHELF | section start
+-IT ROTATES, REVEALING THE OTHER SIDE- | animation
+ON BLOOD DRIPPING: | section start
+-his face changes to a suspicious one- | portrait mood
+ON THE LIGHTS GOING OUT: | section start
+ON BEES: | section start
+PARENTS ARRIVE (GOOD ENDING) | section start
+THE END | fade out
+PARENTS ARRIVE (BAD ENDING) | section start
