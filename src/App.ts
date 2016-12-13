@@ -63,6 +63,7 @@ class SimpleGame {
 	l(this,"bee");
 	l(this,"bed-case");
 	l(this,"bed-case-open");
+	l(this,"logo");
 	
 	var loader = this.game.load.image("window", "assets/window.png");
 	var loader = this.game.load.image("fullscreen", "assets/fullscreen.png");
@@ -95,7 +96,7 @@ class SimpleGame {
             756.5, 171.5,
             "window");
 
-	function l(thiss:any, name: string, x?: number, y?: number, alt?: string) {
+	function l(thiss:any, name: string, x?: number, y?: number, alt?: string) : Phaser.Sprite {
 	    if (alt) {
 		newContainer(thiss.game, new Phaser.Point(x, y), name, alt);
 		return;
@@ -106,6 +107,7 @@ class SimpleGame {
 					  name);
 	    
 	    draggify(s);
+	    return s;
 	}
 	l(this,"laundry", 811.5, 725);
 	l(this,"bookcase1", 1371.5, 335, "bookcase3");
@@ -148,7 +150,20 @@ class SimpleGame {
 	this.fullscreenGroup.addMultiple([this.fullscreenSprite, this.fullscreenText]);
 
 	let d = new DialogController(this.game);
-	d.beginSequence("START");
+	let blackbg = (()=>{
+	    let gfx = new Phaser.Graphics(this.game);
+	    gfx.beginFill(0x000000, 0.44);
+	    gfx.drawRect(0,0,1920,1080);
+	    gfx.endFill();
+	    return new Phaser.Sprite(this.game, 0, 0, gfx.generateTexture());
+	})();
+	this.game.world.add(blackbg);
+	let logo = l(this,"logo");
+	this.game.input.onDown.addOnce(()=>{
+	    blackbg.visible = false;
+	    logo.visible = false;
+	    d.beginSequence("START");
+	});
 	
 	console.log(d);
 	

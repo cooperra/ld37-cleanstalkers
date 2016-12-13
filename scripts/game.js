@@ -321,6 +321,7 @@ var SimpleGame = (function () {
         l(this, "bee");
         l(this, "bed-case");
         l(this, "bed-case-open");
+        l(this, "logo");
         var loader = this.game.load.image("window", "assets/window.png");
         var loader = this.game.load.image("fullscreen", "assets/fullscreen.png");
         var loader = this.game.load.text("script", "dialog/LudumDare37.txt");
@@ -344,6 +345,7 @@ var SimpleGame = (function () {
             var image = thiss.game.cache.getImage(name);
             var s = thiss.game.add.sprite(x || thiss.game.width / 2 - image.width / 2, y || thiss.game.height / 2 - image.height / 2, name);
             draggify(s);
+            return s;
         }
         l(this, "laundry", 811.5, 725);
         l(this, "bookcase1", 1371.5, 335, "bookcase3");
@@ -362,7 +364,20 @@ var SimpleGame = (function () {
         this.fullscreenGroup = this.game.add.group();
         this.fullscreenGroup.addMultiple([this.fullscreenSprite, this.fullscreenText]);
         var d = new DialogController(this.game);
-        d.beginSequence("START");
+        var blackbg = (function () {
+            var gfx = new Phaser.Graphics(_this.game);
+            gfx.beginFill(0x000000, 0.44);
+            gfx.drawRect(0, 0, 1920, 1080);
+            gfx.endFill();
+            return new Phaser.Sprite(_this.game, 0, 0, gfx.generateTexture());
+        })();
+        this.game.world.add(blackbg);
+        var logo = l(this, "logo");
+        this.game.input.onDown.addOnce(function () {
+            blackbg.visible = false;
+            logo.visible = false;
+            d.beginSequence("START");
+        });
         console.log(d);
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.game.scale.onFullScreenChange.add(SimpleGame.prototype.onFullScreenChange, this);
